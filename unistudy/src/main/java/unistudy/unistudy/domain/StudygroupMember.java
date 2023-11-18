@@ -1,16 +1,23 @@
 package unistudy.unistudy.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class StudygroupMember {
-    private int studygroupMemberId;
+    @Id
+    @GeneratedValue
+    private int id;
     private int userId;
     private int studygroupId;
 
-    public void setStudygroupMemberId(int studygroupMemberId) {
-        this.studygroupMemberId = studygroupMemberId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getStudygroupMemberId() {
-        return studygroupMemberId;
+    public int getId() {
+        return id;
     }
 
     public void setUserId(int userId) {

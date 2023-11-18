@@ -1,8 +1,15 @@
 package unistudy.unistudy.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Date;
 
+@Entity
 public class Post {
+
+    @Id
+    @GeneratedValue
     private int id;
     private int writerId; // Foreign Key referencing User table
     private int studyGroupId; // Foreign Key referencing Studygroup table
@@ -11,7 +18,6 @@ public class Post {
     private Date postedAt;
     private Date updatedAt;
     private Date expiredAt;
-
     public void setId(int id) {
         this.id = id;
     }
@@ -75,4 +81,5 @@ public class Post {
     public Date getExpiredAt() {
         return expiredAt;
     }
+
 }
