@@ -2,6 +2,7 @@ package unistudy.unistudy.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import unistudy.unistudy.domain.Post;
 import unistudy.unistudy.service.PostService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,23 +34,30 @@ public class PostController {
         }
     }
 
-@GetMapping("/posts")
-public ResponseEntity<List<Post>> getPosts(
-        @RequestParam(required = false) Integer writerId,
-        @RequestParam(required = false) Integer studyGroupId
-) {
-    List<Post> posts;
+    @GetMapping("/posts")
+    public ResponseEntity<List<Post>> getPosts(
+            @RequestParam(required = false) Integer writerId,
+            @RequestParam(required = false) Integer studyGroupId,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate
+    ) {
+        List<Post> posts;
 
-    if (writerId != null) {
-        posts = postService.findPostByWriterId(writerId);
-    } else if (studyGroupId != null) {
-        posts = postService.findPostByStudygroupId(studyGroupId);
-    } else {
-        posts = postService.findAllPosts();
+        if (title != null) {
+            posts = postService.findByTitleContaining(title);
+        } else if (startDate != null && endDate != null) {
+            posts = postService.findByPostedAtBetween(startDate, endDate);
+        } else if (writerId != null) {
+            posts = postService.findPostByWriterId(writerId);
+        } else if (studyGroupId != null) {
+            posts = postService.findPostByStudygroupId(studyGroupId);
+        } else {
+            posts = postService.findAllPosts();
+        }
+
+        return new ResponseEntity<>(posts, HttpStatus.OK);
     }
-
-    return new ResponseEntity<>(posts, HttpStatus.OK);
-}
 
 
     /* 특정 id의 post 조회 */
