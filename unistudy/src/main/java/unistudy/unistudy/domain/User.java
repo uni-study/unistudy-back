@@ -9,27 +9,23 @@ public class User {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
     private String email;
     private String pw;
     private String name;
 
-
-    // setId 만들 필요 없나?
-
-    public void setId(Integer id){
-        this.id = id;
-    }
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
+
     public String getEmail() {
         return email;
     }
+
     public void setPw(String pw) {
         this.pw = pw;
     }
