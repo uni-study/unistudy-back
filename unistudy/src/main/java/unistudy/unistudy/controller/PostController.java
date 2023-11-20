@@ -32,12 +32,24 @@ public class PostController {
         }
     }
 
-    /* 모든 post 반환 */
-    @GetMapping("/posts")
-    public ResponseEntity<List<Post>> getAllPosts() {
-        List<Post> posts = postService.findAllPosts();
-        return new ResponseEntity<>(posts, HttpStatus.OK);
+@GetMapping("/posts")
+public ResponseEntity<List<Post>> getPosts(
+        @RequestParam(required = false) Integer writerId,
+        @RequestParam(required = false) Integer studyGroupId
+) {
+    List<Post> posts;
+
+    if (writerId != null) {
+        posts = postService.findPostByWriterId(writerId);
+    } else if (studyGroupId != null) {
+        posts = postService.findPostByStudygroupId(studyGroupId);
+    } else {
+        posts = postService.findAllPosts();
     }
+
+    return new ResponseEntity<>(posts, HttpStatus.OK);
+}
+
 
     /* 특정 id의 post 조회 */
     @GetMapping("/post/{id}")
@@ -69,5 +81,6 @@ public class PostController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
 
 }
