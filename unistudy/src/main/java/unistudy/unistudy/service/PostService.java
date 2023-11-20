@@ -32,6 +32,7 @@ public class PostService {
         return postRepository.findById(postId);
     }
 
+
     public List<Post> findPostByWriterId(Integer writerId) {
         return postRepository.findByWriterId(writerId);
     }
@@ -49,6 +50,31 @@ public class PostService {
     }
     public List<Post> findByUpdatedAtBetween(Date startDate, Date endDate){
         return postRepository.findByUpdatedAtBetween(startDate, endDate);
+    }
+    public void updatePost(Integer id, Post updatedPost) {
+        Optional<Post> existingPostOptional = postRepository.findById(id);
+
+        if (existingPostOptional.isPresent()) {
+            Post existingPost = existingPostOptional.get();
+
+            existingPost.setTitle(updatedPost.getTitle());
+            existingPost.setMainText(updatedPost.getMainText());
+            existingPost.setUpdatedAt(updatedPost.getUpdatedAt());
+
+            // save 메서드를 사용하여 엔티티를 업데이트
+            postRepository.save(existingPost);
+        } else {
+            throw new RuntimeException("Post not found");
+        }
+    }
+    public void deletePost(Integer id) {
+        Optional<Post> postOptional = postRepository.findById(id);
+
+        if (postOptional.isPresent()) {
+            postRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Post not found");
+        }
     }
 
 }
