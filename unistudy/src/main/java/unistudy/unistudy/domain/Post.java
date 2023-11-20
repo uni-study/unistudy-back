@@ -10,35 +10,32 @@ public class Post {
 
     @Id
     @GeneratedValue
-    private int id;
-    private int writerId; // Foreign Key referencing User table
-    private int studyGroupId; // Foreign Key referencing Studygroup table
+    private Integer id;
+    private Integer writerId; // Foreign Key referencing User table
+    private Integer studyGroupId; // Foreign Key referencing Studygroup table
     private String title;
     private String mainText;
     private Date postedAt;
     private Date updatedAt;
     private Date expiredAt;
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setWriterId(int writerId) {
+    public void setWriterId(Integer writerId) {
         this.writerId = writerId;
     }
 
-    public int getWriterId() {
+    public Integer getWriterId() {
         return writerId;
     }
 
-    public void setStudyGroupId(int studyGroupId) {
+    public void setStudyGroupId(Integer studyGroupId) {
         this.studyGroupId = studyGroupId;
     }
 
-    public int getStudyGroupId() {
+    public Integer getStudyGroupId() {
         return studyGroupId;
     }
 
