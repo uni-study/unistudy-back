@@ -10,40 +10,38 @@ public class Studygroup {
 
     @Id
     @GeneratedValue
-    private int id;
-    private int leaderId;
-    private String title;
+    private Integer id;
+    private Integer leaderId;
+    private String name;
     private String description;
-    private int department;
-    private int numOfPeople;
-    private int studyMethod;
-    private int studyPeriod;
+    /* 선택 int - value 맵핑 프론트에서! */
+    private Integer department;
+    private Integer numOfPeople;
+    private Integer studyMethod;
+    private Integer studyPeriod;
     private Date recruitmentDeadline;
-    private int currentState;
+    private Integer currentState;
     private String contact;
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setLeaderId(int leaderId) {
+    public void setLeaderId(Integer leaderId) {
         this.leaderId = leaderId;
     }
 
-    public int getLeaderId() {
+    public Integer getLeaderId() {
         return leaderId;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
     public void setDescription(String description) {
@@ -54,35 +52,35 @@ public class Studygroup {
         return description;
     }
 
-    public void setDepartment(int department) {
+    public void setDepartment(Integer department) {
         this.department = department;
     }
 
-    public int getDepartment() {
+    public Integer getDepartment() {
         return department;
     }
 
-    public void setNumOfPeople(int numOfPeople) {
+    public void setNumOfPeople(Integer numOfPeople) {
         this.numOfPeople = numOfPeople;
     }
 
-    public int getNumOfPeople() {
+    public Integer getNumOfPeople() {
         return numOfPeople;
     }
 
-    public void setStudyMethod(int studyMethod) {
+    public void setStudyMethod(Integer studyMethod) {
         this.studyMethod = studyMethod;
     }
 
-    public int getStudyMethod() {
+    public Integer getStudyMethod() {
         return studyMethod;
     }
 
-    public void setStudyPeriod(int studyPeriod) {
+    public void setStudyPeriod(Integer studyPeriod) {
         this.studyPeriod = studyPeriod;
     }
 
-    public int getStudyPeriod() {
+    public Integer getStudyPeriod() {
         return studyPeriod;
     }
 
@@ -94,11 +92,11 @@ public class Studygroup {
         return recruitmentDeadline;
     }
 
-    public void setCurrentState(int currentState) {
+    public void setCurrentState(Integer currentState) {
         this.currentState = currentState;
     }
 
-    public int getCurrentState() {
+    public Integer getCurrentState() {
         return currentState;
     }
 
