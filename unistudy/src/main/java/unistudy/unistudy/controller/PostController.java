@@ -117,7 +117,8 @@ public class PostController {
                 post.getPostedAt(),
                 post.getUpdatedAt(),
                 post.getExpiredAt(),
-                (post.getStudygroup() != null) ? post.getStudygroup().getId() : null
+                (post.getStudygroup() != null) ? post.getStudygroup().getId() : null,
+                post.getWriter().getId()
         );
 
         return postDTO;

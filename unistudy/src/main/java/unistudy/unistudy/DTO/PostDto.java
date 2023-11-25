@@ -10,13 +10,14 @@ public class PostDto {
     private Date updatedAt;
     private Date expiredAt;
     private Integer studygroupId;
+    private Integer writerId;  // 추가된 부분
 
     // Default constructor
     public PostDto() {
     }
 
     // Constructor with parameters
-    public PostDto(Integer id, String title, String mainText, Date postedAt, Date updatedAt, Date expiredAt, Integer studygroupId) {
+    public PostDto(Integer id, String title, String mainText, Date postedAt, Date updatedAt, Date expiredAt, Integer studygroupId, Integer writerId) {
         this.id = id;
         this.title = title;
         this.mainText = mainText;
@@ -24,6 +25,7 @@ public class PostDto {
         this.updatedAt = updatedAt;
         this.expiredAt = expiredAt;
         this.studygroupId = studygroupId;
+        this.writerId = writerId;
     }
 
     public Integer getId() {
@@ -80,5 +82,13 @@ public class PostDto {
 
     public void setStudygroupId(Integer studygroupId) {
         this.studygroupId = studygroupId;
+    }
+
+    public Integer getWriterId() {
+        return writerId;
+    }
+
+    public void setWriterId(Integer writerId) {
+        this.writerId = writerId;
     }
 }
