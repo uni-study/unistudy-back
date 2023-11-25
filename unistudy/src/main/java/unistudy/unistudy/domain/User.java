@@ -1,9 +1,7 @@
 package unistudy.unistudy.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class User {
@@ -16,6 +14,12 @@ public class User {
     private String email;
     private String pw;
     private String name;
+    @OneToMany(mappedBy = "writer")
+    private List<Post> posts;
+
+    @OneToMany(mappedBy = "user")
+    private List<StudygroupMember> studygroupMembers;
+
 
     public Integer getId() {
         return id;
@@ -43,5 +47,12 @@ public class User {
 
     public String getName() {
         return name;
+    }
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 }
