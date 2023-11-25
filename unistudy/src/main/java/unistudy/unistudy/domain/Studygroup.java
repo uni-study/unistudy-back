@@ -3,7 +3,9 @@ package unistudy.unistudy.domain;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Studygroup {
@@ -11,6 +13,8 @@ public class Studygroup {
     @Id
     @GeneratedValue
     private Integer id;
+
+
     private Integer leaderId;
     private String name;
     private String description;
@@ -22,6 +26,8 @@ public class Studygroup {
     private Date recruitmentDeadline;
     private Integer currentState;
     private String contact;
+    @OneToMany(mappedBy = "studygroup")
+    private List<StudygroupMember> studygroupMembers;
 
 
     public Integer getId() {

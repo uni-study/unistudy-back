@@ -6,12 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import unistudy.unistudy.DTO.StudygroupDto;
 import unistudy.unistudy.domain.Studygroup;
 import unistudy.unistudy.service.StudygroupService;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class StudygroupController {
@@ -20,6 +22,23 @@ public class StudygroupController {
     @Autowired
     public StudygroupController(StudygroupService studygroupService) {
         this.studygroupService = studygroupService;
+    }
+
+    private StudygroupDto convertToDto(Studygroup studygroup) {
+        StudygroupDto studygroupDto = new StudygroupDto();
+        studygroupDto.setId(studygroup.getId());
+        studygroupDto.setLeaderId(studygroup.getLeaderId());
+        studygroupDto.setName(studygroup.getName());
+        studygroupDto.setDescription(studygroup.getDescription());
+        studygroupDto.setDepartment(studygroup.getDepartment());
+        studygroupDto.setNumOfPeople(studygroup.getNumOfPeople());
+        studygroupDto.setStudyMethod(studygroup.getStudyMethod());
+        studygroupDto.setStudyPeriod(studygroup.getStudyPeriod());
+        studygroupDto.setRecruitmentDeadline(studygroup.getRecruitmentDeadline());
+        studygroupDto.setCurrentState(studygroup.getCurrentState());
+        studygroupDto.setContact(studygroup.getContact());
+
+        return studygroupDto;
     }
 
     /* 그룹 생성 */
@@ -35,11 +54,11 @@ public class StudygroupController {
 
     /* 특정 id 스터디그룹 반환 */
     @GetMapping("/study-groups/{id}")
-    public ResponseEntity<Studygroup> getStudyGroupById(@PathVariable Integer id) {
+    public ResponseEntity<StudygroupDto> getStudyGroupById(@PathVariable Integer id) {
         Optional<Studygroup> studyGroupOptional = studygroupService.findById(id);
 
         return studyGroupOptional
-                .map(studyGroup -> new ResponseEntity<>(studyGroup, HttpStatus.OK))
+                .map(studyGroup -> new ResponseEntity<>(convertToDto(studyGroup), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -56,7 +75,7 @@ public class StudygroupController {
 
     /* 특정 id 그룹 수정 */
     @PutMapping("/study-groups/{id}")
-    public ResponseEntity<Studygroup> updateStudyGroup(
+    public ResponseEntity<StudygroupDto> updateStudyGroup(
             @PathVariable Integer id,
             @RequestBody Studygroup updatedStudygroup
     ) {
@@ -65,7 +84,7 @@ public class StudygroupController {
             Optional<Studygroup> updatedStudyGroupOptional = studygroupService.findById(id);
 
             return updatedStudyGroupOptional
-                    .map(studyGroup -> new ResponseEntity<>(studyGroup, HttpStatus.OK))
+                    .map(studyGroup -> new ResponseEntity<>(convertToDto(studyGroup), HttpStatus.OK))
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -75,7 +94,7 @@ public class StudygroupController {
 
     /* 조건 해당 그룹 반환 */
     @GetMapping("/study-groups")
-    public ResponseEntity<List<Studygroup>> getStudyGroups(
+    public ResponseEntity<List<StudygroupDto>> getStudyGroups(
             @RequestParam(required = false) Integer leaderId,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String description,
@@ -105,7 +124,11 @@ public class StudygroupController {
             studyGroups = studygroupService.findAllStudygroup();
         }
 
-        return new ResponseEntity<>(studyGroups, HttpStatus.OK);
+        List<StudygroupDto> studygroupDtos = studyGroups.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(studygroupDtos, HttpStatus.OK);
     }
 
 
