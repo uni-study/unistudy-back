@@ -1,8 +1,6 @@
 package unistudy.unistudy.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -11,8 +9,13 @@ public class Post {
     @Id
     @GeneratedValue
     private Integer id;
-    private Integer writerId; // Foreign Key referencing User table
-    private Integer studyGroupId; // Foreign Key referencing Studygroup table
+
+    @ManyToOne
+
+    private User writer;
+
+    @ManyToOne
+    private Studygroup studygroup;
     private String title;
     private String mainText;
     private Date postedAt;
@@ -23,22 +26,21 @@ public class Post {
         return id;
     }
 
-    public void setWriterId(Integer writerId) {
-        this.writerId = writerId;
+    public void setWriter(User writer) {
+        this.writer = writer;
     }
 
-    public Integer getWriterId() {
-        return writerId;
+    public User getWriter() {
+        return writer;
     }
 
-    public void setStudyGroupId(Integer studyGroupId) {
-        this.studyGroupId = studyGroupId;
+    public void setStudygroup(Studygroup studygroup) {
+        this.studygroup = studygroup;
     }
 
-    public Integer getStudyGroupId() {
-        return studyGroupId;
+    public Studygroup getStudygroup() {
+        return studygroup;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }

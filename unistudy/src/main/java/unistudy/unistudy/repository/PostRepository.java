@@ -11,9 +11,9 @@ import java.util.Optional;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
     @Override
-    Optional<Post> findById(Integer integer);
-    List<Post> findByWriterId(Integer integer);
-    List<Post> findByStudyGroupId(Integer integer);
+    Optional<Post> findById(Integer id);
+    List<Post> findByWriter_Id(Integer userId);
+    List<Post> findByStudygroup_Id(Integer studygroupId);
 
     List<Post> findByTitleContaining(String title);
     List<Post> findByPostedAtBetween(Date startDate, Date endDate);
