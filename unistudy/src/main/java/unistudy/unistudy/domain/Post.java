@@ -2,6 +2,7 @@ package unistudy.unistudy.domain;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Post {
@@ -21,6 +22,9 @@ public class Post {
     private Date postedAt;
     private Date updatedAt;
     private Date expiredAt;
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments;
 
     public Integer getId() {
         return id;
@@ -80,5 +84,7 @@ public class Post {
     public Date getExpiredAt() {
         return expiredAt;
     }
+    public List<Comment> getComments() {return comments;}
+    public void setComments(List<Comment> comments) {this.comments = comments;}
 
 }
