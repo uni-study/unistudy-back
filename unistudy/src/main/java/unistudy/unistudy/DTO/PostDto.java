@@ -10,7 +10,7 @@ public class PostDto {
     private Date updatedAt;
     private Date expiredAt;
     private Integer studygroupId;
-    private Integer writerId;  // 추가된 부분
+    private Integer writerId;
 
     // Default constructor
     public PostDto() {
