@@ -40,10 +40,11 @@ public class PostController {
         try {
             // 클라이언트가 전달한 studygroupId와 writerId를 사용하여 Studygroup 및 Writer 객체를 가져옴
             Studygroup studygroup = studygroupService.findById(postDto.getStudygroupId())
-                    .orElseThrow(() -> new RuntimeException("Studygroup not found"));
+                    .orElse(null);  // orElse 메서드를 사용하여 Optional이 비어있을 때 null을 반환하도록 함
 
             User writer = userService.findOneUser(postDto.getWriterId())
-                    .orElseThrow(() -> new RuntimeException("Writer not found"));
+                    .orElse(null);  // orElse 메서드를 사용하여 Optional이 비어있을 때 null을 반환하도록 함
+
 
             // Post 엔티티 생성 및 필드 설정
             Post post = new Post();
@@ -51,6 +52,9 @@ public class PostController {
             post.setMainText(postDto.getMainText());
             post.setStudygroup(studygroup);
             post.setWriter(writer);
+            post.setPostedAt(postDto.getPostedAt());
+            post.setUpdatedAt(postDto.getUpdatedAt());
+            post.setExpiredAt(postDto.getExpiredAt());
 
             Integer postId = postService.uploadPost(post);
             Optional<Post> createdPost = postService.findPostById(postId);

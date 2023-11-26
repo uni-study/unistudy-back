@@ -1,8 +1,10 @@
 package unistudy.unistudy.domain;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 public class Post {
@@ -11,11 +13,11 @@ public class Post {
     @GeneratedValue
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
 
     private User writer;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     private Studygroup studygroup;
     private String title;
     private String mainText;
@@ -23,8 +25,6 @@ public class Post {
     private Date updatedAt;
     private Date expiredAt;
 
-    @OneToMany(mappedBy = "post")
-    private List<Comment> comments;
 
     public Integer getId() {
         return id;
@@ -84,7 +84,5 @@ public class Post {
     public Date getExpiredAt() {
         return expiredAt;
     }
-    public List<Comment> getComments() {return comments;}
-    public void setComments(List<Comment> comments) {this.comments = comments;}
 
 }

@@ -25,7 +25,7 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping
+    @PostMapping("/comment")
     public ResponseEntity<CommentDto> createComment(@RequestBody CommentDto commentDto) {
         CommentDto createdComment = commentService.createComment(commentDto);
         return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
@@ -33,7 +33,7 @@ public class CommentController {
 
 
 
-    @GetMapping("comment/{id}")
+    @GetMapping("/comment/{id}")
     public ResponseEntity<CommentDto> getCommentById(@PathVariable Integer id) {
         Optional<CommentDto> comment = commentService.getCommentById(id);
         return comment.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
@@ -64,13 +64,13 @@ public class CommentController {
 
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
-    @PutMapping("comment/{id}")
+    @PutMapping("/comment/{id}")
     public ResponseEntity<CommentDto> updateComment(@PathVariable Integer id, @RequestBody CommentDto commentDto) {
         CommentDto updatedComment = commentService.updateComment(id, commentDto);
         return new ResponseEntity<>(updatedComment, HttpStatus.OK);
     }
 
-    @DeleteMapping("comment/{id}")
+    @DeleteMapping("/comment/{id}")
     public ResponseEntity<String> deleteComment(@PathVariable Integer id) {
         commentService.deleteComment(id);
         return new ResponseEntity<>("Comment deleted successfully", HttpStatus.OK);
