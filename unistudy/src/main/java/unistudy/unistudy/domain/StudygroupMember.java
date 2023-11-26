@@ -1,16 +1,25 @@
 package unistudy.unistudy.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class StudygroupMember {
     @Id
     @GeneratedValue
     private int id;
-    private int userId;
-    private int studygroupId;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "STUDYGROUP_ID")
+    private Studygroup studygroup;
+
+    private Date joinedDate;
+
+
 
     public void setId(int id) {
         this.id = id;
@@ -20,19 +29,27 @@ public class StudygroupMember {
         return id;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public Studygroup getStudygroup() {
+        return studygroup;
     }
 
-    public int getUserId() {
-        return userId;
+    public Date getJoinedDate() {
+        return joinedDate;
     }
 
-    public void setStudygroupId(int studygroupId) {
-        this.studygroupId = studygroupId;
+    public User getUser() {
+        return user;
     }
 
-    public int getStudygroupId() {
-        return studygroupId;
+    public void setStudygroup(Studygroup studygroup) {
+        this.studygroup = studygroup;
+    }
+
+    public void setJoinedDate(Date joinedDate) {
+        this.joinedDate = joinedDate;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

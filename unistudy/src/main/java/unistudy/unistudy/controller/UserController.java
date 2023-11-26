@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import unistudy.unistudy.DTO.UserDto;
 import unistudy.unistudy.domain.User;
 import unistudy.unistudy.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -36,26 +38,38 @@ public class UserController {
 
     // 모든 유저 목록 반환
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserDto>> getAllUsers() {
         List<User> users = userService.findAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        List<UserDto> userDtos = users.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(userDtos, HttpStatus.OK);
     }
 
 
     // 특정 아이디 유저 조회
     @GetMapping("/user/{userid}")
-    public ResponseEntity<User> getOneUser(@PathVariable Integer userid) {
+    public ResponseEntity<UserDto> getOneUser(@PathVariable Integer userid) {
         Optional<User> userOptional = userService.findOneUser(userid);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            UserDto userDto = convertToDto(user);
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-
+    // Convert User to UserDto
+    private UserDto convertToDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setEmail(user.getEmail());
+        userDto.setName(user.getName());
+        // You can add more fields as needed
+        return userDto;
+    }
 
 
 }

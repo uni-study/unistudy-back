@@ -34,11 +34,11 @@ public class PostService {
 
 
     public List<Post> findPostByWriterId(Integer writerId) {
-        return postRepository.findByWriterId(writerId);
+        return postRepository.findByWriter_Id(writerId);
     }
 
     public List<Post> findPostByStudygroupId(Integer studygroupId) {
-        return postRepository.findByStudyGroupId(studygroupId);
+        return postRepository.findByStudygroup_Id(studygroupId);
     }
 
     public List<Post> findByTitleContaining(String title) {
