@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import unistudy.unistudy.DTO.UserDto;
 import unistudy.unistudy.domain.User;
 import unistudy.unistudy.service.UserService;
@@ -70,6 +67,26 @@ public class UserController {
         // You can add more fields as needed
         return userDto;
     }
+    @DeleteMapping("/user/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> deleteUser(@PathVariable Integer userId) {
+        try {
+            userService.deleteUser(userId);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
+    // 유저 정보 업데이트
+    @PutMapping("/user/{userId}")
+    public ResponseEntity<String> updateUser(@PathVariable Integer userId, @RequestBody User updatedUser) {
+        try {
+            userService.updateUser(userId, updatedUser);
+            return new ResponseEntity<>("User updated successfully", HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 
 }
