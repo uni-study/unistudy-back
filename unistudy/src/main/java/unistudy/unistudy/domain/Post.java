@@ -1,6 +1,9 @@
 package unistudy.unistudy.domain;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.util.Date;
 
 @Entity
@@ -10,17 +13,18 @@ public class Post {
     @GeneratedValue
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
 
     private User writer;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     private Studygroup studygroup;
     private String title;
     private String mainText;
     private Date postedAt;
     private Date updatedAt;
     private Date expiredAt;
+
 
     public Integer getId() {
         return id;
