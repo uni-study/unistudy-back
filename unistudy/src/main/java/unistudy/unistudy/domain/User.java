@@ -14,10 +14,10 @@ public class User {
     private String email;
     private String pw;
     private String name;
-    @OneToMany(mappedBy = "writer")
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudygroupMember> studygroupMembers;
 
 
@@ -55,4 +55,8 @@ public class User {
     public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
+
+    public void setStudygroupMembers(List<StudygroupMember> studygroupMembers) {this.studygroupMembers = studygroupMembers;}
+
+    public List<StudygroupMember> getStudygroupMembers() {return studygroupMembers;}
 }
