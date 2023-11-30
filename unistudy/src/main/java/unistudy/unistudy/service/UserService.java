@@ -1,6 +1,7 @@
 package unistudy.unistudy.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import unistudy.unistudy.domain.Post;
 import unistudy.unistudy.domain.User;
@@ -28,15 +29,10 @@ public class UserService {
         userRepository.save(user);
         return user.getId();
     }
-    private void validateDuplicateUser(User user) {
-        userRepository.findByEmail(user.getEmail())
-                .ifPresent(m -> {
-                    try {
-                        throw new IllegalAccessException("이미 가입한 이메일입니다.");
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+    public ResponseEntity<String> validateDuplicateUser(User user) {
+        return userRepository.findByEmail(user.getEmail())
+                .map(m -> ResponseEntity.badRequest().body("이미 가입한 이메일입니다."))
+                .orElse(null);
     }
 
     public List<User> findAllUsers() {

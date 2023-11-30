@@ -23,15 +23,26 @@ public class UserController {
     }
 
     // 회원가입
+// 회원가입
+    /* 회원가입 */
     @PostMapping("/signup")
-    public ResponseEntity<Integer> signUp(@RequestBody User user) {
+    public ResponseEntity<UserDto> signUp(@RequestBody User user) {
         try {
             Integer userId = userService.join(user);
-            return new ResponseEntity<>(userId, HttpStatus.CREATED);
+            Optional<User> createdUser = userService.findOneUser(userId);
+
+            if (createdUser.isPresent()) {
+                UserDto userDto = convertToDto(createdUser.get());
+                return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+
 
     // 모든 유저 목록 반환
     @GetMapping("/users")
@@ -64,6 +75,7 @@ public class UserController {
         userDto.setId(user.getId());
         userDto.setEmail(user.getEmail());
         userDto.setName(user.getName());
+        userDto.setPw(user.getPw());
         // You can add more fields as needed
         return userDto;
     }
