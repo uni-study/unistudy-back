@@ -17,7 +17,9 @@ public class UnistudyApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("*");
+				registry.addMapping("/**").allowedOrigins("*").allowedHeaders("*").allowedMethods("GET", "POST", "DELETE", "PATCH", "PUT", "OPTIONS").allowCredentials(true);
+//				registry.addMapping("/**").allowedOrigins("*");
+
 			}
 		};
 	}
