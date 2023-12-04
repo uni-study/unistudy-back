@@ -26,7 +26,21 @@ public class StudygroupMemberService  {
         this.userRepository = userRepository;
     }
 
-    public void joinStudygroup(int studygroupId, int userId) {
+    public StudygroupMember findByStudygroupMemberId(Integer id) {
+        return studygroupMemberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("StudygroupMember not found with id: " + id));
+    }
+
+    @Transactional
+    public void updateStudygroupMember(StudygroupMember updatedMember) {
+        studygroupMemberRepository.save(updatedMember);
+    }
+
+    @Transactional
+    public void deleteStudygroupMemberById(Integer id) {
+        studygroupMemberRepository.deleteById(id);
+    }
+    public void joinStudygroup(Integer studygroupId, Integer userId) {
         // 스터디그룹 멤버 추가 로직
         // 중복 가입을 막기 위한 검증 로직 등을 추가할 수 있습니다.
 
@@ -45,19 +59,30 @@ public class StudygroupMemberService  {
         studygroupMemberRepository.save(studygroupMember);
     }
 
-    public List<StudygroupMember> getMembersByStudygroupId(int studygroupId) {
+    public List<StudygroupMember> getMembersByStudygroupId(Integer studygroupId) {
         // 스터디그룹의 모든 멤버 조회 로직
         return studygroupMemberRepository.findByStudygroupId(studygroupId);
     }
     @Transactional
-    public void withdrawFromStudygroup(int studygroupId, int userId) {
+    public void withdrawFromStudygroup(Integer studygroupId, Integer userId) {
         // 스터디그룹에서 멤버 탈퇴 로직
         studygroupMemberRepository.deleteByStudygroupIdAndUserId(studygroupId, userId);
     }
 
-    public List<Studygroup> getStudygroupsByUserId(int userId) {
+    public List<Studygroup> getStudygroupsByUserId(Integer userId) {
         // 유저가 속한 모든 스터디그룹 조회 로직
         return studygroupMemberRepository.findStudygroupsByUserId(userId);
     }
+
+    public List<StudygroupMember> getMembersByAcceptedAndStudygroupId(Boolean accepted, Integer studygroupId) {
+        // accepted 값과 studygroupId 값에 따라 해당하는 모든 멤버 조회 로직
+        return studygroupMemberRepository.findByAcceptedAndStudygroupId(accepted, studygroupId);
+    }
+
+    public List<Studygroup> getStudygroupsByAcceptedAndUserId(Boolean accepted, Integer userId) {
+        // accepted 값과 userId 값에 따라 해당하는 모든 스터디그룹 조회 로직
+        return studygroupMemberRepository.findStudygroupsByAcceptedAndUserId(accepted, userId);
+    }
+
 
 }

@@ -7,7 +7,7 @@ import java.util.Date;
 public class StudygroupMember {
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
@@ -19,13 +19,24 @@ public class StudygroupMember {
 
     private Date joinedDate;
 
+    private Boolean accepted;
 
+    public StudygroupMember() {
+        this.accepted = false; // 생성자에서 accepted를 false로 초기화
+    }
 
-    public void setId(int id) {
+    public StudygroupMember(User user, Studygroup studygroup, Date joinedDate) {
+        this.user = user;
+        this.studygroup = studygroup;
+        this.joinedDate = joinedDate;
+        this.accepted = false; // 생성자에서 accepted를 false로 초기화
+    }
+
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -51,5 +62,13 @@ public class StudygroupMember {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setAccepted(Boolean accepted){
+        this.accepted = accepted;
+    }
+
+    public Boolean getAccepted() {
+        return accepted;
     }
 }
