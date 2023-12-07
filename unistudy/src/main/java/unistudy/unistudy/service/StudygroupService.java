@@ -2,7 +2,9 @@ package unistudy.unistudy.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import unistudy.unistudy.domain.Post;
 import unistudy.unistudy.domain.Studygroup;
+import unistudy.unistudy.repository.PostRepository;
 import unistudy.unistudy.repository.StudygroupRepository;
 
 import java.util.Date;
@@ -12,10 +14,12 @@ import java.util.Optional;
 @Service
 public class StudygroupService {
     private StudygroupRepository studygroupRepository;
+    private PostRepository postRepository;
 
     @Autowired
-    public StudygroupService(StudygroupRepository studygroupRepository) {
+    public StudygroupService(StudygroupRepository studygroupRepository, PostRepository postRepository) {
         this.studygroupRepository = studygroupRepository;
+        this.postRepository = postRepository;
     }
 
     public Integer createStudygroup(Studygroup studygroup){
@@ -86,6 +90,16 @@ public class StudygroupService {
         Optional<Studygroup> studygroupOptional = studygroupRepository.findById(id);
 
         if(studygroupOptional.isPresent()) {
+            Studygroup studygroup = studygroupOptional.get();
+
+            // Post 엔티티에서 해당 User를 참조하는 필드를 null로 설정
+            List<Post> posts = postRepository.findByStudygroup_Id(studygroup.getId());
+            for (Post post : posts) {
+                post.setStudygroup(null);
+                postRepository.save(post);
+            }
+
+
             studygroupRepository.deleteById(id);
         }else{
             throw new RuntimeException("Study group not found");
