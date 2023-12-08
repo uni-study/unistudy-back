@@ -25,7 +25,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    // 로그인
+
 // 로그인
     @PostMapping("/login")
     public ResponseEntity<UserDto> login(@RequestBody LoginRequest loginRequest, HttpServletRequest httpServletRequest) {
@@ -48,6 +48,21 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+    // 로그아웃
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest httpServletRequest) {
+        try {
+            HttpSession session = httpServletRequest.getSession(false);
+            if (session != null) {
+                session.invalidate(); // 세션 무효화
+            }
+            return new ResponseEntity<>("Logged out successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error during logout", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 
     /* 회원가입 */
     @PostMapping("/signup")
