@@ -62,6 +62,37 @@ public class UserController {
         }
     }
 
+    // 세션 정보 확인
+    @GetMapping("/check-session")
+    public ResponseEntity<UserDto> checkSession(HttpServletRequest httpServletRequest) {
+        try {
+            HttpSession session = httpServletRequest.getSession(false);
+
+            // 세션이 없으면 로그인되지 않은 상태로 간주
+            if (session == null || session.getAttribute("userId") == null) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            // 세션에서 userId 가져오기
+            Integer userId = (Integer) session.getAttribute("userId");
+
+            // userId로 사용자 조회
+            Optional<User> userOptional = userService.findOneUser(userId);
+
+            // 사용자가 존재하면 DTO로 변환하여 반환
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                UserDto userDto = convertToDto(user);
+                return new ResponseEntity<>(userDto, HttpStatus.OK);
+            } else {
+                // 사용자가 존재하지 않으면 UNAUTHORIZED 반환
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 
     /* 회원가입 */
