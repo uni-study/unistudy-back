@@ -3,6 +3,7 @@ package unistudy.unistudy.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import unistudy.unistudy.domain.LoginRequest;
 import unistudy.unistudy.domain.Post;
 import unistudy.unistudy.domain.User;
 import unistudy.unistudy.repository.PostRepository;
@@ -23,6 +24,28 @@ public class UserService {
         this.postRepository = postRepository;
     }
 
+    // 로그인
+
+    public User login(LoginRequest req){
+        Optional<User> optionalUser = userRepository.findByEmail(req.getEmail());
+        if(optionalUser.isEmpty()){
+            return null;
+        }
+        User user = optionalUser.get();
+        if(!user.getPw().equals(req.getPw())){
+            return null;
+        }
+        return user;
+    }
+    // 인증기능
+    public User getLoginUserById(Integer userId) {
+        if(userId == null) return null;
+
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(optionalUser.isEmpty()) return null;
+
+        return optionalUser.get();
+    }
     /* 회원가입 */
     public Integer join(User user){
         validateDuplicateUser(user);

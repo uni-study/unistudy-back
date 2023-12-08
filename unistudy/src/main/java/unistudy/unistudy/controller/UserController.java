@@ -6,9 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import unistudy.unistudy.DTO.UserDto;
+import unistudy.unistudy.domain.LoginRequest;
 import unistudy.unistudy.domain.User;
 import unistudy.unistudy.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,8 +25,30 @@ public class UserController {
         this.userService = userService;
     }
 
-    // 회원가입
-// 회원가입
+    // 로그인
+// 로그인
+    @PostMapping("/login")
+    public ResponseEntity<UserDto> login(@RequestBody LoginRequest loginRequest, HttpServletRequest httpServletRequest) {
+        try {
+            User user = userService.login(loginRequest);
+
+            if (user != null) {
+                // 로그인 성공
+                HttpSession session = httpServletRequest.getSession(true);
+                session.setAttribute("userId", user.getId());
+                session.setMaxInactiveInterval(1800);
+
+                UserDto userDto = convertToDto(user);
+                return new ResponseEntity<>(userDto, HttpStatus.OK);
+            } else {
+                // 로그인 실패
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     /* 회원가입 */
     @PostMapping("/signup")
     public ResponseEntity<UserDto> signUp(@RequestBody User user) {
