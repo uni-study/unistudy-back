@@ -6,9 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import unistudy.unistudy.DTO.UserDto;
+import unistudy.unistudy.domain.LoginRequest;
 import unistudy.unistudy.domain.User;
 import unistudy.unistudy.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,8 +25,76 @@ public class UserController {
         this.userService = userService;
     }
 
-    // 회원가입
-// 회원가입
+
+// 로그인
+    @PostMapping("/login")
+    public ResponseEntity<UserDto> login(@RequestBody LoginRequest loginRequest, HttpServletRequest httpServletRequest) {
+        try {
+            User user = userService.login(loginRequest);
+
+            if (user != null) {
+                // 로그인 성공
+                HttpSession session = httpServletRequest.getSession(true);
+                session.setAttribute("userId", user.getId());
+                session.setMaxInactiveInterval(1800);
+
+                UserDto userDto = convertToDto(user);
+                return new ResponseEntity<>(userDto, HttpStatus.OK);
+            } else {
+                // 로그인 실패
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    // 로그아웃
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest httpServletRequest) {
+        try {
+            HttpSession session = httpServletRequest.getSession(false);
+            if (session != null) {
+                session.invalidate(); // 세션 무효화
+            }
+            return new ResponseEntity<>("Logged out successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error during logout", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // 세션 정보 확인
+    @GetMapping("/check-session")
+    public ResponseEntity<UserDto> checkSession(HttpServletRequest httpServletRequest) {
+        try {
+            HttpSession session = httpServletRequest.getSession(false);
+
+            // 세션이 없으면 로그인되지 않은 상태로 간주
+            if (session == null || session.getAttribute("userId") == null) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            // 세션에서 userId 가져오기
+            Integer userId = (Integer) session.getAttribute("userId");
+
+            // userId로 사용자 조회
+            Optional<User> userOptional = userService.findOneUser(userId);
+
+            // 사용자가 존재하면 DTO로 변환하여 반환
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                UserDto userDto = convertToDto(user);
+                return new ResponseEntity<>(userDto, HttpStatus.OK);
+            } else {
+                // 사용자가 존재하지 않으면 UNAUTHORIZED 반환
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
     /* 회원가입 */
     @PostMapping("/signup")
     public ResponseEntity<UserDto> signUp(@RequestBody User user) {

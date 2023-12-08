@@ -1,9 +1,6 @@
 package unistudy.unistudy.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -12,9 +9,9 @@ public class Comment {
     @GeneratedValue
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private Post post;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
 
     private User writer;
 
