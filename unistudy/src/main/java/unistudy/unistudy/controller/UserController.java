@@ -68,9 +68,9 @@ public class UserController {
         try {
             HttpSession session = httpServletRequest.getSession(false);
 
-            // 세션이 없으면 로그인되지 않은 상태로 간주
+            // 세션이 없으면 null 반환
             if (session == null || session.getAttribute("userId") == null) {
-                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(null, HttpStatus.OK);
             }
 
             // 세션에서 userId 가져오기
