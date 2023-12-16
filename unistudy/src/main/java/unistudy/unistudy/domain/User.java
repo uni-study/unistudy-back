@@ -14,12 +14,16 @@ public class User {
     private String email;
     private String pw;
     private String name;
+
+    // A user can write many posts
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
 
+    // A user can join many studygroups (As User-Studygroup relation is many to many, middle table StudygroupMembers is used)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudygroupMember> studygroupMembers;
 
+    // getter, setter
 
     public Integer getId() {
         return id;

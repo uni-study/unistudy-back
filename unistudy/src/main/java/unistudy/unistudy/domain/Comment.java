@@ -3,6 +3,7 @@ package unistudy.unistudy.domain;
 import javax.persistence.*;
 import java.util.Date;
 
+// Comment Entity on blog posts
 @Entity
 public class Comment {
     @Id
