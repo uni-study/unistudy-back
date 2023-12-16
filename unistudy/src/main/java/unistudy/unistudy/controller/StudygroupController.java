@@ -24,6 +24,7 @@ public class StudygroupController {
         this.studygroupService = studygroupService;
     }
 
+    // studygroup entity to studygroup dto
     private StudygroupDto convertToDto(Studygroup studygroup) {
         StudygroupDto studygroupDto = new StudygroupDto();
         studygroupDto.setId(studygroup.getId());
@@ -41,7 +42,7 @@ public class StudygroupController {
         return studygroupDto;
     }
 
-    /* 그룹 생성 */
+    // create studygroup
     @PostMapping("/study-group")
     public ResponseEntity<Integer> studygroup(@RequestBody Studygroup studygroup) {
         try {
@@ -52,7 +53,7 @@ public class StudygroupController {
         }
     }
 
-    /* 특정 id 스터디그룹 반환 */
+    // find studygroup by id
     @GetMapping("/study-groups/{id}")
     public ResponseEntity<StudygroupDto> getStudyGroupById(@PathVariable Integer id) {
         Optional<Studygroup> studyGroupOptional = studygroupService.findById(id);
@@ -62,7 +63,7 @@ public class StudygroupController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    /* 특정 id 그룹 삭제 */
+    // delete studygroup by id
     @DeleteMapping("/study-groups/{id}")
     public ResponseEntity<Void> deleteStudyGroup(@PathVariable Integer id) {
         try {
@@ -73,7 +74,7 @@ public class StudygroupController {
         }
     }
 
-    /* 특정 id 그룹 수정 */
+    // edit studygroup by id
     @PutMapping("/study-groups/{id}")
     public ResponseEntity<StudygroupDto> updateStudyGroup(
             @PathVariable Integer id,
@@ -92,7 +93,7 @@ public class StudygroupController {
     }
 
 
-    /* 조건 해당 그룹 반환 */
+    // find studygroup list and filtering by
     @GetMapping("/study-groups")
     public ResponseEntity<List<StudygroupDto>> getStudyGroups(
             @RequestParam(required = false) Integer leaderId,
