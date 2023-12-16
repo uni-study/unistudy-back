@@ -24,8 +24,7 @@ public class UserService {
         this.postRepository = postRepository;
     }
 
-    // 로그인
-
+    // Login
     public User login(LoginRequest req){
         Optional<User> optionalUser = userRepository.findByEmail(req.getEmail());
         if(optionalUser.isEmpty()){
@@ -37,7 +36,7 @@ public class UserService {
         }
         return user;
     }
-    // 인증기능
+    // find by id
     public User getLoginUserById(Integer userId) {
         if(userId == null) return null;
 
@@ -46,7 +45,7 @@ public class UserService {
 
         return optionalUser.get();
     }
-    /* 회원가입 */
+    // sign up
     public Integer join(User user){
         validateDuplicateUser(user);
         userRepository.save(user);
@@ -58,12 +57,15 @@ public class UserService {
                 .orElse(null);
     }
 
+    // find all users
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
+    // find one user by id
     public Optional<User> findOneUser(Integer userId) {
         return userRepository.findById(userId);
     }
+    // delete user
     @Transactional
     public void deleteUser(Integer userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
@@ -84,7 +86,7 @@ public class UserService {
             throw new RuntimeException("User not found");
         }
     }
-
+    // update user information
     public void updateUser(Integer userId, User updatedUser) {
         Optional<User> userOptional = userRepository.findById(userId);
 

@@ -1,5 +1,6 @@
 package unistudy.unistudy.domain;
 
+// login field(email, pw)
 public class LoginRequest {
     private String email;
     private String pw;

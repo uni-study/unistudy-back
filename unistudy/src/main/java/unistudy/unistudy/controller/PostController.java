@@ -34,7 +34,7 @@ public class PostController {
     }
 
 
-    /* 포스트 작성 */
+    // write post
     @PostMapping("/post")
     public ResponseEntity<PostDto> post(@RequestBody PostDto postDto) {
         try {
@@ -71,7 +71,7 @@ public class PostController {
     }
 
 
-
+    // get post list and filter by writerId, studygroupId, title, writtenPeriod
     @GetMapping("/posts")
     public ResponseEntity<List<PostDto>> getPosts(
             @RequestParam(required = false) Integer writerId,
@@ -93,17 +93,16 @@ public class PostController {
         } else {
             posts = postService.findAllPosts();
         }
-// Post 엔티티를 PostDTO로 변환
+        // change post entity to post Dto
         List<PostDto> postDTOs = posts.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(postDTOs, HttpStatus.OK);
-//        return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
 
-    /* 특정 id의 post 조회 */
+    // find post by id
     @GetMapping("/post/{id}")
     public ResponseEntity<PostDto> getPostById(@PathVariable Integer id) {
         Optional<Post> optionalPost = postService.findPostById(id);
@@ -115,7 +114,7 @@ public class PostController {
         }
     }
 
-    /* 특정 포스트 수정 */
+    // edit post with id
     @PutMapping("/post/{id}")
     public ResponseEntity<String> updatePost(@PathVariable Integer id, @RequestBody Post updatedPost) {
         try {
@@ -125,7 +124,7 @@ public class PostController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    /* 특정 포스트 삭제 */
+    // delete post with id
     @DeleteMapping("/post/{id}")
     public ResponseEntity<String> deletePost(@PathVariable Integer id) {
         try {
@@ -136,7 +135,7 @@ public class PostController {
         }
     }
 
-    // Post 엔티티를 PostDTO로 변환하는 메서드
+    // Post entity to post dto
     private PostDto convertToDTO(Post post) {
         Integer writerId = (post.getWriter() != null) ? post.getWriter().getId() : null;
         Integer studygroupId = (post.getStudygroup() != null) ? post.getStudygroup().getId() : null;

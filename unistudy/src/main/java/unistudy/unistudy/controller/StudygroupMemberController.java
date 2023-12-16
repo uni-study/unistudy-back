@@ -22,6 +22,8 @@ public class StudygroupMemberController {
     public StudygroupMemberController(StudygroupMemberService studygroupMemberService) {
         this.studygroupMemberService = studygroupMemberService;
     }
+
+    // find studygroup-member relationship by id
     @GetMapping("/studygroup-member/{id}")
     public ResponseEntity<StudygroupMemberDto> getMemberById(@PathVariable Integer id) {
         StudygroupMember member = studygroupMemberService.findByStudygroupMemberId(id);
@@ -36,6 +38,8 @@ public class StudygroupMemberController {
         return new ResponseEntity<>(memberDto, HttpStatus.OK);
     }
 
+
+    // edit studygroup-member relationship
     @PutMapping("/studygroup-member/{id}")
     public ResponseEntity<String> updateStudygroupMember(@PathVariable Integer id, @RequestBody StudygroupMemberDto updatedMemberDto) {
         StudygroupMember existingMember = studygroupMemberService.findByStudygroupMemberId(id);
@@ -53,6 +57,7 @@ public class StudygroupMemberController {
         return new ResponseEntity<>("Studygroup member updated successfully", HttpStatus.OK);
     }
 
+    // delete studygroup-member relationship
     @DeleteMapping("/studygroup-member/{id}")
     public ResponseEntity<String> deleteStudygroupMember(@PathVariable Integer id) {
         StudygroupMember existingMember = studygroupMemberService.findByStudygroupMemberId(id);
@@ -67,12 +72,15 @@ public class StudygroupMemberController {
         return new ResponseEntity<>("Studygroup member deleted successfully", HttpStatus.OK);
     }
 
+
+    // join user into the studygroup
     @PostMapping("/join/study-group/{studygroupId}/member/{userId}")
     public ResponseEntity<String> joinStudygroup(@PathVariable Integer studygroupId, @PathVariable Integer userId) {
         studygroupMemberService.joinStudygroup(studygroupId, userId);
         return new ResponseEntity<>("Joined study group successfully", HttpStatus.OK);
     }
 
+    // find users who are belong to specific studygroup
     @GetMapping("/studygroup-member-list/{studygroupId}")
     public ResponseEntity<List<StudygroupMemberDto>> getMembersByStudygroupId(@PathVariable Integer studygroupId) {
         List<StudygroupMember> members = studygroupMemberService.getMembersByStudygroupId(studygroupId);
@@ -81,24 +89,28 @@ public class StudygroupMemberController {
         return new ResponseEntity<>(memberDtos, HttpStatus.OK);
     }
 
+    // delete studygroup-member relationship by studygroupId and userId
     @DeleteMapping("/withdraw/study-group/{studygroupId}/member/{userId}")
     public ResponseEntity<String> withdrawFromStudygroup(@PathVariable Integer studygroupId, @PathVariable Integer userId) {
         studygroupMemberService.withdrawFromStudygroup(studygroupId, userId);
         return new ResponseEntity<>("Withdrawn from study group successfully", HttpStatus.OK);
     }
 
+    // find all studygroups of a specific user
     @GetMapping("/my-group/{userId}")
     public ResponseEntity<List<Studygroup>> getStudygroupsByUserId(@PathVariable Integer userId) {
         List<Studygroup> studygroups = studygroupMemberService.getStudygroupsByUserId(userId);
         return new ResponseEntity<>(studygroups, HttpStatus.OK);
     }
 
+    // convert to dto studygroup-member relationship lists
     private List<StudygroupMemberDto> convertToDtos(List<StudygroupMember> members) {
         return members.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
+    // convert to dto studygroup-member
     private StudygroupMemberDto convertToDto(StudygroupMember studygroupMember) {
         StudygroupMemberDto dto = new StudygroupMemberDto();
         dto.setId(studygroupMember.getId());
@@ -108,6 +120,10 @@ public class StudygroupMemberController {
         dto.setAccepted(studygroupMember.getAccepted());
         return dto;
     }
+
+    // accepted condition: If user applied to join studygroup,
+    // but not yet approved.
+    // find users who are belong to specific studygroup + filter by accepted condition
     @GetMapping("/studygroup-member-list/{studygroupId}/{accepted}")
     public ResponseEntity<List<StudygroupMemberDto>> getMembersByAcceptedAndStudygroupId(@PathVariable Integer studygroupId, @PathVariable Boolean accepted) {
         List<StudygroupMember> members = studygroupMemberService.getMembersByAcceptedAndStudygroupId(accepted, studygroupId);
@@ -115,7 +131,7 @@ public class StudygroupMemberController {
         List<StudygroupMemberDto> memberDtos = convertToDtos(members);
         return new ResponseEntity<>(memberDtos, HttpStatus.OK);
     }
-
+    // find all studygroups of a specific user + filter by accepted condition
     @GetMapping("/my-group/{userId}/{accepted}")
     public ResponseEntity<List<Studygroup>> getStudygroupsByAcceptedAndUserId(@PathVariable Integer userId, @PathVariable Boolean accepted) {
         List<Studygroup> studygroups = studygroupMemberService.getStudygroupsByAcceptedAndUserId(accepted, userId);

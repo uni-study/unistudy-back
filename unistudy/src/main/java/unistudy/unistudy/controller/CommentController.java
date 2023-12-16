@@ -25,6 +25,7 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+    // write comment
     @PostMapping("/comment")
     public ResponseEntity<CommentDto> createComment(@RequestBody CommentDto commentDto) {
         CommentDto createdComment = commentService.createComment(commentDto);
@@ -32,7 +33,7 @@ public class CommentController {
     }
 
 
-
+    // find comment with id
     @GetMapping("/comment/{id}")
     public ResponseEntity<CommentDto> getCommentById(@PathVariable Integer id) {
         Optional<CommentDto> comment = commentService.getCommentById(id);
@@ -40,6 +41,7 @@ public class CommentController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    // get comments and filtering by postId, writerId, mainText, postedAt
     @GetMapping("/comments")
     public ResponseEntity<List<CommentDto>> getComments(
             @RequestParam(required = false) Integer postId,
@@ -64,12 +66,15 @@ public class CommentController {
 
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
+
+    // edit comments
     @PutMapping("/comment/{id}")
     public ResponseEntity<CommentDto> updateComment(@PathVariable Integer id, @RequestBody CommentDto commentDto) {
         CommentDto updatedComment = commentService.updateComment(id, commentDto);
         return new ResponseEntity<>(updatedComment, HttpStatus.OK);
     }
 
+    // delete comments
     @DeleteMapping("/comment/{id}")
     public ResponseEntity<String> deleteComment(@PathVariable Integer id) {
         commentService.deleteComment(id);

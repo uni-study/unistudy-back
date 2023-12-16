@@ -26,7 +26,7 @@ public class UserController {
     }
 
 
-// 로그인
+    //login and create session
     @PostMapping("/login")
     public ResponseEntity<UserDto> login(@RequestBody LoginRequest loginRequest, HttpServletRequest httpServletRequest) {
         try {
@@ -48,7 +48,8 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-    // 로그아웃
+
+    // logout and delete session
     @GetMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest httpServletRequest) {
         try {
@@ -62,30 +63,30 @@ public class UserController {
         }
     }
 
-    // 세션 정보 확인
+    // check session information(check current user)
     @GetMapping("/check-session")
     public ResponseEntity<UserDto> checkSession(HttpServletRequest httpServletRequest) {
         try {
             HttpSession session = httpServletRequest.getSession(false);
 
-            // 세션이 없으면 null 반환
+            // If there's no session, return null
             if (session == null || session.getAttribute("userId") == null) {
                 return new ResponseEntity<>(null, HttpStatus.OK);
             }
 
-            // 세션에서 userId 가져오기
+            // get userId from current session
             Integer userId = (Integer) session.getAttribute("userId");
 
-            // userId로 사용자 조회
+            // find user with userId
             Optional<User> userOptional = userService.findOneUser(userId);
 
-            // 사용자가 존재하면 DTO로 변환하여 반환
+            // If user exists, return user dto
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
                 UserDto userDto = convertToDto(user);
                 return new ResponseEntity<>(userDto, HttpStatus.OK);
             } else {
-                // 사용자가 존재하지 않으면 UNAUTHORIZED 반환
+                // If there's no user, return UNAUTHORIZED
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception e) {
@@ -95,7 +96,7 @@ public class UserController {
 
 
 
-    /* 회원가입 */
+    // sign up
     @PostMapping("/signup")
     public ResponseEntity<UserDto> signUp(@RequestBody User user) {
         try {
@@ -115,7 +116,7 @@ public class UserController {
 
 
 
-    // 모든 유저 목록 반환
+    // return all user list
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<User> users = userService.findAllUsers();
@@ -126,7 +127,7 @@ public class UserController {
     }
 
 
-    // 특정 아이디 유저 조회
+    // find user with id
     @GetMapping("/user/{userid}")
     public ResponseEntity<UserDto> getOneUser(@PathVariable Integer userid) {
         Optional<User> userOptional = userService.findOneUser(userid);
@@ -147,9 +148,10 @@ public class UserController {
         userDto.setEmail(user.getEmail());
         userDto.setName(user.getName());
         userDto.setPw(user.getPw());
-        // You can add more fields as needed
         return userDto;
     }
+
+    // delete user
     @DeleteMapping("/user/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteUser(@PathVariable Integer userId) {
@@ -161,7 +163,7 @@ public class UserController {
         }
     }
 
-    // 유저 정보 업데이트
+    // update user info
     @PutMapping("/user/{userId}")
     public ResponseEntity<String> updateUser(@PathVariable Integer userId, @RequestBody User updatedUser) {
         try {

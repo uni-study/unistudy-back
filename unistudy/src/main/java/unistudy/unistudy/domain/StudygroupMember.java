@@ -3,6 +3,9 @@ package unistudy.unistudy.domain;
 import javax.persistence.*;
 import java.util.Date;
 
+
+// StudygroupMember is the middle table to handle many-to-many relationship of User and Studygroup
+
 @Entity
 public class StudygroupMember {
     @Id
