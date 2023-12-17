@@ -6,13 +6,16 @@
 
 ## Environment
 - Server
-  - OS: Windows 11 Home
+  - OS: Ubuntu 18.04
   - DB MySQL 8.0.34
   - Language: Java 11
   - Framework & Main Libraries: Springboot 2
   - Communication protocol: HTTP
  
 - Deploy
+  - EC2 Server: The application is deployed on an EC2 server.
+  - RDS Database: MySQL 8 is used as the database on Amazon RDS.
+  - Frontend: The frontend is hosted on Amazon S3, and CloudFront is used as a content delivery network.
 
 ## Main features
 HTTP request APIs are implemented.
