@@ -7,7 +7,7 @@
 ## Environment
 - Server
   - OS: Ubuntu 18.04
-  - DB MySQL 8.0.34
+  - DB: MySQL 8.0.34 on Amazon RDS
   - Language: Java 11
   - Framework & Main Libraries: Springboot 2
   - Communication protocol: HTTP
