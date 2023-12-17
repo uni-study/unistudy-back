@@ -6,7 +6,7 @@
 
 ## Environment
 - Server
-  - OS: Ubuntu 18.04
+  - OS: Ubuntu 18.04
   - DB MySQL 8.0.34
   - Language: Java 11
   - Framework & Main Libraries: Springboot 2
